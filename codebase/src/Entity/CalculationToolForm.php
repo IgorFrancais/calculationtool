@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CalculationToolFormRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 #[ORM\Entity(repositoryClass: CalculationToolFormRepository::class)]
 class CalculationToolForm
@@ -121,5 +123,15 @@ class CalculationToolForm
         $this->total = $total;
 
         return $this;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
+    {
+        // ...
+
+        $metadata->addPropertyConstraint('vehicleType', new Assert\Choice([
+            'choices' => ['Common', 'Luxury'],
+            'message' => 'Choose a valid car type [Common, Luxury].',
+        ]));
     }
 }

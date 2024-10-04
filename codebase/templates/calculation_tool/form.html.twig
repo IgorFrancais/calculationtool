@@ -1,0 +1,6 @@
+{# templates/task/new.html.twig #}
+{#{{ form_start(form, {'action': path('target_route'), 'method': 'GET'}) }}#}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+{{ form_end(form) }}

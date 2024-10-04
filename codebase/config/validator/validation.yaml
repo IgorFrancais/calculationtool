@@ -1,0 +1,16 @@
+# config/validator/validation.yaml
+App\Entity\CalculationToolForm:
+  properties:
+    vehiclePrice:
+      - NotBlank: ~
+    vehicleType:
+      - NotBlank: ~
+      - Choice: { choices: [Common, Luxury] }
+    feeBasic:
+      - NotBlank: ~
+    feeSpecial:
+      - NotBlank: ~
+    feeAssociation:
+      - NotBlank: ~
+    feeStorage:
+      - NotBlank: ~
