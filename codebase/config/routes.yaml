@@ -5,3 +5,7 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+calculationtool:
+    path: /calctool/index
+    controller: App\Controller\CalculationToolController::index
