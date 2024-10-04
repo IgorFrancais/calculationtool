@@ -1,7 +1,7 @@
 version: '3.8'
 
 networks:
-  calcuationtool:
+  calculationtool:
 
 services:
   server:
@@ -22,7 +22,7 @@ services:
       db_server:
         condition: service_healthy
     networks:
-      - calcuationtool
+      - calculationtool
 
   db_server:
     image: mariadb:10.5.9
@@ -43,7 +43,7 @@ services:
       interval: 5s
       retries: 5
     networks:
-      - calcuationtool
+      - calculationtool
 
   db_admin:
     image: phpmyadmin/phpmyadmin:5
@@ -58,7 +58,7 @@ services:
     volumes:
       - db_admin_data:/var/www/html
     networks:
-      - calcuationtool
+      - calculationtool
 
 volumes:
   db_data:
