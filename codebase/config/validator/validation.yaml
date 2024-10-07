@@ -6,11 +6,3 @@ App\Entity\CalculationToolForm:
     vehicleType:
       - NotBlank: ~
       - Choice: { choices: [Common, Luxury] }
-    feeBasic:
-      - NotBlank: ~
-    feeSpecial:
-      - NotBlank: ~
-    feeAssociation:
-      - NotBlank: ~
-    feeStorage:
-      - NotBlank: ~

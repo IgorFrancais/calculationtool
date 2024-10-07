@@ -1,6 +1,33 @@
-{# templates/task/new.html.twig #}
-{#{{ form_start(form, {'action': path('target_route'), 'method': 'GET'}) }}#}
+{# templates/calculation_tool/form.html.twig #}
+{% extends 'base.html.twig' %}
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-    {{ form_widget(form) }}
-{{ form_end(form) }}
+{% block title %}CalculationTool{% endblock %}
+
+{% block body %}
+    <style>
+        .calculationtool-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .calculationtool-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+        #calculation_tool_vehiclePrice,
+        #calculation_tool_vehicleType,
+        #calculation_tool_feeBasic,
+        #calculation_tool_feeSpecial,
+        #calculation_tool_feeAssociation,
+        #calculation_tool_feeStorage,
+        #calculation_tool_total
+        {
+            margin: 10px auto 10px 20px;
+        }
+
+        #calculation_tool .form-label {
+            border-color: brown;
+            width:200px;
+        }
+    </style>
+
+    <div class="calculationtool-wrapper">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

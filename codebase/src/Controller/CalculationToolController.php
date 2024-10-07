@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CalculationToolForm;
 use App\Form\Type\CalculationToolType;
+use App\Calculation\Utils\FeeCalculation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,35 +12,48 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CalculationToolController extends AbstractController
 {
-    #[Route('/calculation/tool', name: 'app_calculation_tool')]
-    public function index(): Response
-    {
-        return $this->render('calculation_tool/index.html.twig', [
-            'controller_name' => 'CalculationToolController',
-        ]);
-        return $this->new();
+    public function __construct(
+        private FeeCalculation $feeCalculation
+    ) {
     }
 
-    public function new(Request $request): Response
+    public function calculation(Request $request): Response
     {
-        $calculationForm = new CalculationToolForm();
-
-        // use some PHP logic to decide if this form field is required or not
-
-        $form = $this->createForm(CalculationToolType::class, $calculationForm, [
-//            'action' => $this->generateUrl('calctoolnew'),
-//            'method' => 'GET',
-            'require_due_date' => true,
-        ]);
+        $calculationToolForm = new CalculationToolForm();
+        $form = $this->createForm(CalculationToolType::class, $calculationToolForm);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $calculationForm = $form->getData();
+            $calculationToolForm = $form->getData();
 
-            // ... perform some action, such as saving the task to the database
+            $vehiclePrice = $calculationToolForm->getVehiclePrice();
+            $vehicleType = $calculationToolForm->getVehicleType();
 
-            return $this->redirectToRoute('calctoolnew');
+            $feeBasic = $this->feeCalculation->calculateFeeBasic($vehiclePrice, $vehicleType);
+            $feeSpecial = $this->feeCalculation->calculateFeeSpecial($vehiclePrice, $vehicleType);
+            $feeAssociation = $this->feeCalculation->calculateFeeAssociation($vehiclePrice);
+            $feeStorage = $this->feeCalculation->getFeeStorage();
+
+            $totalPrice = $this->feeCalculation->calculateTotalPrice(
+                $vehiclePrice,
+                $feeBasic,
+                $feeSpecial,
+                $feeAssociation,
+                $feeStorage
+            );
+
+            $calculationToolForm->setFeeBasic($feeBasic);
+            $calculationToolForm->setFeeSpecial($feeSpecial);
+            $calculationToolForm->setFeeAssociation($feeAssociation);
+            $calculationToolForm->setFeeStorage($feeStorage);
+            $calculationToolForm->setTotal($totalPrice);
+
+            $formCalculated = $this->createForm(CalculationToolType::class, $calculationToolForm);
+
+            return $this->renderForm('calculation_tool/form.html.twig', [
+                'form' => $formCalculated,
+            ]);
         }
 
         return $this->renderForm('calculation_tool/form.html.twig', [
