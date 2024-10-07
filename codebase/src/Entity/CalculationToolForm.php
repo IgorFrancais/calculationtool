@@ -7,33 +7,22 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-#[ORM\Entity(repositoryClass: CalculationToolFormRepository::class)]
 class CalculationToolForm
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
     private ?float $vehiclePrice = null;
 
-    #[ORM\Column(length: 6)]
     private ?string $vehicleType = null;
 
-    #[ORM\Column]
     private ?float $feeBasic = null;
 
-    #[ORM\Column]
     private ?float $feeSpecial = null;
 
-    #[ORM\Column]
     private ?float $feeAssociation = null;
 
-    #[ORM\Column]
     private ?float $feeStorage = null;
 
-    #[ORM\Column]
     private ?float $total = null;
 
     public function getId(): ?int
@@ -127,8 +116,6 @@ class CalculationToolForm
 
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
-        // ...
-
         $metadata->addPropertyConstraint('vehicleType', new Assert\Choice([
             'choices' => ['Common', 'Luxury'],
             'message' => 'Choose a valid car type [Common, Luxury].',
