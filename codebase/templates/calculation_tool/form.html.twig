@@ -23,11 +23,18 @@
             border-color: brown;
             width:200px;
         }
+
+        fieldset {
+            width:60%;
+        }
     </style>
 
     <div class="calculationtool-wrapper">
-        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-            {{ form_widget(form) }}
-        {{ form_end(form) }}
+        <fieldset>
+            <legend>Calculation form</legend>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </fieldset>
     </div>
 {% endblock %}
