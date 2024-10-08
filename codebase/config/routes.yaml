@@ -9,11 +9,3 @@ kernel:
 homepage:
     path: /
     controller: App\Controller\CalculationToolController::calculation
-
-calculation:
-    path: /calculation
-    controller: App\Controller\CalculationToolController::calculation
-
-index:
-    path: /index
-    controller: App\Controller\CalculationToolController::index
