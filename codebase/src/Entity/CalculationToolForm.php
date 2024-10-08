@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Choice as AssertChoice;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class CalculationToolForm
@@ -114,7 +114,7 @@ class CalculationToolForm
 
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
     {
-        $metadata->addPropertyConstraint('vehicleType', new Assert\Choice([
+        $metadata->addPropertyConstraint('vehicleType', new AssertChoice([
             'choices' => ['Common', 'Luxury'],
             'message' => 'Choose a valid car type [Common, Luxury].',
         ]));
