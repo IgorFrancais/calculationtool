@@ -12,22 +12,22 @@ use Symfony\Component\HttpFoundation\Response;
 class CalculationToolController extends AbstractController
 {
     public function __construct(
-        private FeeCalculation $feeCalculation
+        private FeeCalculation $feeCalculation,
+        private CalculationToolForm $calculationToolForm
     ) {
     }
 
     public function calculation(Request $request): Response
     {
-        $calculationToolForm = new CalculationToolForm();
-        $form = $this->createForm(CalculationToolType::class, $calculationToolForm);
+        $form = $this->createForm(CalculationToolType::class, $this->calculationToolForm);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $calculationToolForm = $form->getData();
+            $this->calculationToolForm = $form->getData();
 
-            $vehiclePrice = $calculationToolForm->getVehiclePrice();
-            $vehicleType = $calculationToolForm->getVehicleType();
+            $vehiclePrice = $this->calculationToolForm->getVehiclePrice();
+            $vehicleType = $this->calculationToolForm->getVehicleType();
 
             $feeBasic = $this->feeCalculation->calculateFeeBasic($vehiclePrice, $vehicleType);
             $feeSpecial = $this->feeCalculation->calculateFeeSpecial($vehiclePrice, $vehicleType);
@@ -42,13 +42,13 @@ class CalculationToolController extends AbstractController
                 $feeStorage
             );
 
-            $calculationToolForm->setFeeBasic($feeBasic);
-            $calculationToolForm->setFeeSpecial($feeSpecial);
-            $calculationToolForm->setFeeAssociation($feeAssociation);
-            $calculationToolForm->setFeeStorage($feeStorage);
-            $calculationToolForm->setTotal($totalPrice);
+            $this->calculationToolForm->setFeeBasic($feeBasic);
+            $this->calculationToolForm->setFeeSpecial($feeSpecial);
+            $this->calculationToolForm->setFeeAssociation($feeAssociation);
+            $this->calculationToolForm->setFeeStorage($feeStorage);
+            $this->calculationToolForm->setTotal($totalPrice);
 
-            $formCalculated = $this->createForm(CalculationToolType::class, $calculationToolForm);
+            $formCalculated = $this->createForm(CalculationToolType::class, $this->calculationToolForm);
 
             return $this->renderForm('calculation_tool/form.html.twig', [
                 'form' => $formCalculated,
